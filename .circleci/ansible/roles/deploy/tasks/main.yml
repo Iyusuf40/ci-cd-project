@@ -1,5 +1,5 @@
 - name: Copy tar file
-  template:
+  copy:
     src: "files/artifact.tar.gz"
     dest: "~/"
 
