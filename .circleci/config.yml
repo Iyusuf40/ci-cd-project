@@ -343,22 +343,15 @@ jobs:
             sudo apt-get install tar
       - attach_workspace:
           at: ws
-      # - run:
-      #     name: Get backend url
-      #     command: |
-      #       export BACKEND_IP=$(aws ec2 describe-instances \
-      #         --query 'Reservations[*].Instances[*].PublicIpAddress' \
-      #         --output text)
       - run:
           name: Backend smoke test.
           command: |
             echo "=== backend ip ===="
-            BACKEND_IP=$(aws ec2 describe-instances \
+            ip=$(aws ec2 describe-instances \
               --query 'Reservations[0].Instances[*].PublicIpAddress' \
               --output text)
-            echo $BACKEND_IP
-            ip=$(grep [0-9] < ws/project/.circleci/ansible/inventory.txt)
-            BACKEND_IP=$(echo "$BACKEND_IP" | cut -d" " -f1)
+            echo $ip
+            # ip=$(grep [0-9] < ws/project/.circleci/ansible/inventory.txt)
             echo =======ip=======
             echo $ip
             BE_URL="http://$ip:3030/api/status"
