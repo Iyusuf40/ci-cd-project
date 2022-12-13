@@ -199,7 +199,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             ip=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --query 'Reservations[*].Instances[0].PublicIpAddress' \
               --output text) 
             echo "$ip" >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
@@ -276,7 +276,7 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --query 'Reservations[*].Instances[0].PublicIpAddress' \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -354,7 +354,7 @@ jobs:
           command: |
             echo "=== backend ip ===="
             BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --query 'Reservations[*].Instances[0].PublicIpAddress' \
               --output text)
             echo $BACKEND_IP
             ip=$(grep [0-9] < ws/project/.circleci/ansible/inventory.txt)
