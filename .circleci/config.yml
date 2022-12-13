@@ -33,9 +33,9 @@ commands:
             SUCCESS=$(curl -k https://kvdb.io/HvxoR29eUKqT5rgiy3dfmE/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  npm run migrations:revert
+             cd ~/project/backend
+             npm install
+             npm run migrations:revert
             fi
             
 jobs:
@@ -238,18 +238,19 @@ jobs:
           name: Install dependencies
           command: |
             # install tar
-            sudo yum install tar -y
-            sudo yum install gzip -y
+            yum install tar -y
+            yum install gzip -y
             # installs python
             echo '====python installation===='
-            sudo yum install python3 -y
-            which curl || sudo yum install curl -y
+            yum install python3 -y
+            which curl || yum install curl -y
             echo '==== ansible installation====='
             sudo pip3 install --user ansible
             # install nodejs and npm
             echo '======node - npm installation'
-            curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
-              sudo apt-get install -y nodejs
+            # curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
+            #   yum install -y nodejs
+            yum install -y nodejs:18/common
       - attach_workspace:
           at: ws
       - run:
@@ -284,18 +285,19 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo yum install tar -y
-            sudo yum install gzip -y
+            yum install tar -y
+            yum install gzip -y
             # installs python
             echo '====python installation===='
-            sudo yum install python3 -y
-            which curl || sudo yum install curl -y
+            yum install python3 -y
+            which curl || yum install curl -y
             echo '==== ansible installation====='
-            sudo pip3 install --user ansible
+            pip3 install --user ansible
             # install nodejs and npm
-            echo '======node - npm installation'
-            curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
-              sudo apt-get install -y nodejs
+            echo '======node - npm installation====='
+            # curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
+            #   yum install -y nodejs
+            yum install -y nodejs:18/common
       - attach_workspace:
           at: ws
       - run:
