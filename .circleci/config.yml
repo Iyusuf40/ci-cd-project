@@ -30,7 +30,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl https://kvdb.io/HvxoR29eUKqT5rgiy3dfmE/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            SUCCESS=$(curl -k https://kvdb.io/HvxoR29eUKqT5rgiy3dfmE/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
             then
             #  cd ~/project/backend
@@ -222,7 +222,7 @@ jobs:
             if grep -q "has been executed successfully." \
               ~/project/backend/migrations_dump.txt
             then
-               curl https://kvdb.io/HvxoR29eUKqT5rgiy3dfmE/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+               curl -k https://kvdb.io/HvxoR29eUKqT5rgiy3dfmE/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
      # Here's where you will add some code to rollback on failure
       - destroy-environment 
@@ -248,7 +248,7 @@ jobs:
             sudo pip3 install --user ansible
             # install nodejs and npm
             echo '======node - npm installation'
-            curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
+            curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
               sudo apt-get install -y nodejs
       - run:
           name: Get backend url
@@ -292,7 +292,7 @@ jobs:
             sudo pip3 install --user ansible
             # install nodejs and npm
             echo '======node - npm installation'
-            curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
+            curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
               sudo apt-get install -y nodejs
       - run:
           name: Deploy backend
