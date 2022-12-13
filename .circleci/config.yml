@@ -24,7 +24,7 @@ commands:
     description: installs aws, ansible and other dependencies
     steps:
       - run:
-          name: Destroy environments
+          name: Make installations
           when: on_fail
           command: |
             sudo apt-get install tar
@@ -321,7 +321,10 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            cp ws/inven* .circleci/ansible
+            echo "==== view files in dir ===="
+            ls
+            ls ws
+            cp ws/inventory.txt .circleci/ansible
             cd backend
             npm i
             npm run build
