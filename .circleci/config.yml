@@ -233,13 +233,13 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ws
+
       - run:
           name: Install dependencies
           command: |
             # install tar
-            sudo yum instal tar -y
+            sudo yum install tar -y
+            sudo yum install gzip -y
             # installs python
             echo '====python installation===='
             sudo yum install python3 -y
@@ -250,6 +250,8 @@ jobs:
             echo '======node - npm installation'
             curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
               sudo apt-get install -y nodejs
+      - attach_workspace:
+          at: ws
       - run:
           name: Get backend url
           command: |
@@ -278,12 +280,12 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["d5:ff:ce:90:1f:ba:cd:39:8a:86:5e:77:88:ae:7f:9a"]
-      - attach_workspace:
-          at: ws
+
       - run:
           name: Install dependencies
           command: |
-            sudo yum instal tar -y
+            sudo yum install tar -y
+            sudo yum install gzip -y
             # installs python
             echo '====python installation===='
             sudo yum install python3 -y
@@ -294,6 +296,8 @@ jobs:
             echo '======node - npm installation'
             curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
               sudo apt-get install -y nodejs
+      - attach_workspace:
+          at: ws
       - run:
           name: Deploy backend
           command: |
