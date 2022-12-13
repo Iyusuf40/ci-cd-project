@@ -355,6 +355,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             echo $BACKEND_IP
+            BACKEND_IP=$(echo "$BACKEND_IP" | cut -d" " -f1)
             BE_URL="http://$BACKEND_IP:3030/api/status"
             if curl "$BE_URL" | grep "ok"
             then
