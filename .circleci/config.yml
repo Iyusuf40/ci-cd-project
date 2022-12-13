@@ -41,6 +41,21 @@ commands:
             sudo pip3 install ansible
             export PATH=~/.local/bin:$PATH
             sudo npm install pm2 -g
+
+  install-aws-cli:
+    description: installs aws, ansible and other dependencies
+    steps:
+      - run:
+          name: aws cli installation
+          command: |
+            sudo apt-get install tar
+            sudo apt-get install gzip
+            sudo apt-get install python3
+            which aws || sudo apt-get install curl
+            which aws || sudo apt-get install unzip
+            which aws || curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            which aws || unzip awscliv2.zip
+            which aws || sudo ./aws/install
                   
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -316,28 +331,45 @@ jobs:
       - destroy-environment
       - revert-migrations
 
-#   smoke-test:
-#     docker:
-#       # Lightweight Docker image 
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#       - run:
-#           name: Backend smoke test.
-#           command: |
-#             # your code here
-#       - run:
-#           name: Frontend smoke test.
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  smoke-test:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      # Checkout code from git
+      - install-aws-cli
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get install curl
+      - run:
+          name: Get backend url
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+      - run:
+          name: Backend smoke test.
+          command: |
+            echo "=== backend ip ===="
+            echo $BACKEND_IP
+            BE_URL="http://$BACKEND_IP:3030/api/status"
+            if curl "$BE_URL" | grep "ok"
+            then
+                exit 0
+            else
+                exit 1
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com/#/employees"
+            if curl -s ${URL} | grep "Welcome"
+            then 
+              exit 1
+            else
+              exit 1
+            fi
+      - destroy-environment
 
 #   cloudfront-update:
 #     docker:
@@ -400,8 +432,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
