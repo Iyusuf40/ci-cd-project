@@ -245,12 +245,11 @@ jobs:
             yum install python3 -y
             which curl || yum install curl -y
             echo '==== ansible installation====='
-            sudo pip3 install --user ansible
+            pip3 install --user ansible
             # install nodejs and npm
             echo '======node - npm installation'
-            # curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
-            #   yum install -y nodejs
-            yum install -y nodejs:18/common
+            curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
+            yum -y install nodejs
       - attach_workspace:
           at: ws
       - run:
@@ -295,9 +294,8 @@ jobs:
             pip3 install --user ansible
             # install nodejs and npm
             echo '======node - npm installation====='
-            # curl -k -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
-            #   yum install -y nodejs
-            yum install -y nodejs:18/common
+            curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
+            yum -y install nodejs
       - attach_workspace:
           at: ws
       - run:
