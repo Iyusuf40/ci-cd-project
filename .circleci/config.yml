@@ -25,7 +25,6 @@ commands:
     steps:
       - run:
           name: Make installations
-          when: on_fail
           command: |
             sudo apt-get install tar
             sudo apt-get install gzip
@@ -324,7 +323,7 @@ jobs:
             echo "==== view files in dir ===="
             ls
             ls ws
-            cp ws/inventory.txt .circleci/ansible
+            cp ws/project/.circleci/ansible/inventory.txt .circleci/ansible
             cd backend
             npm i
             npm run build
