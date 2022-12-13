@@ -341,12 +341,16 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get install curl
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text)
+            sudo apt-get install gzip
+            sudo apt-get install tar
+      - attach_workspace:
+          at: ws
+      # - run:
+      #     name: Get backend url
+      #     command: |
+      #       export BACKEND_IP=$(aws ec2 describe-instances \
+      #         --query 'Reservations[*].Instances[*].PublicIpAddress' \
+      #         --output text)
       - run:
           name: Backend smoke test.
           command: |
@@ -355,8 +359,11 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             echo $BACKEND_IP
+            ip=$(grep [0-9] < ws/project/.circleci/ansible/inventory.txt)
             BACKEND_IP=$(echo "$BACKEND_IP" | cut -d" " -f1)
-            BE_URL="http://$BACKEND_IP:3030/api/status"
+            echo =======ip=======
+            echo $ip
+            BE_URL="http://$ip:3030/api/status"
             if curl "$BE_URL" | grep "ok"
             then
                 exit 0
