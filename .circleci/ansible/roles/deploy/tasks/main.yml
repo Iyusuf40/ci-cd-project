@@ -1,6 +1,6 @@
 - name: Copy tar file
-  template:
-    src: ".circleci/ansible/artifact.tar.gz"
+  copy:
+    src: "/home/circleci/project/.circleci/ansible/artifact.tar.gz"
     dest: "~/"
 
 - name: "install tar"
