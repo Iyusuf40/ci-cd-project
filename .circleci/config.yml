@@ -386,7 +386,7 @@ jobs:
 
   cloudfront-update:
     docker:
-      image: amazon/aws-cli
+      - image: amazon/aws-cli
     steps:
       - run:
           name: Install dependencies
