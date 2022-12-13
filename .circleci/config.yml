@@ -427,19 +427,24 @@ jobs:
             list=$(aws cloudformation list-stacks \
                     --query "StackSummaries[*].StackName" \
                     --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
-            read -r -a array <<< "$list"
-            echo "1st index == ${array[0]} --- 2nd index == ${array[3]}"
+            # read -r -a array <<< "$list"
+            # echo "1st index == ${array[0]} --- 2nd index == ${array[3]}"
 
-            if [[ "${array[3]}" =~ "${CIRCLE_WORKFLOW_ID:0:7}" ]]
+            thirdItem=$(echo "$list" | cut -f3)
+            OldWorkflowID=$(echo "$thirdItem" | cut -d- -f3)
+
+            if [[ "$OldWorkflowID" ]]
             then
-              echo "=== cleanup starting ==="
-              OldWorkflowID=$(echo "${array[3]}" | cut -d- -f3)
-              echo $OldWorkflowID
-              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
-            else
-                    echo "=== noyhing to clean ==="
+              if [[ "$OldWorkflowID" =~ "${CIRCLE_WORKFLOW_ID:0:7}" ]]
+              then
+                echo "=== nothing to clean ==="
+              else
+                echo "=== cleanup starting ==="
+                echo $OldWorkflowID
+                aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+                aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+                aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"  
+              fi
             fi
 
             
