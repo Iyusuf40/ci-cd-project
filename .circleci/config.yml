@@ -19,7 +19,27 @@ commands:
               "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name \
               "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            
+
+  installations:
+    description: installs aws, ansible and other dependencies
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            sudo apt-get install tar
+            sudo apt-get install gzip
+            sudo apt-get install python3
+            which aws || sudo apt-get install curl
+            which aws || sudo apt-get install unzip
+            which aws || curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            which aws || unzip awscliv2.zip
+            which aws || sudo ./aws/install
+            # which node || curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && \
+            # sudo apt-get install -y nodejs
+            # install pm2
+            sudo npm install pm2 -g
+                  
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -230,26 +250,26 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-
-      - run:
-          name: Install dependencies
-          command: |
-            # install tar
-            yum install tar -y
-            yum install gzip -y
-            # installs python
-            echo '====python installation===='
-            yum install python3 -y
-            which curl || yum install curl -y
-            echo '==== ansible installation====='
-            pip3 install --user ansible
-            # install nodejs and npm
-            echo '======node - npm installation'
-            curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
-            yum -y install nodejs
+      - installations
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       # install tar
+      #       yum install tar -y
+      #       yum install gzip -y
+      #       # installs python
+      #       echo '====python installation===='
+      #       yum install python3 -y
+      #       which curl || yum install curl -y
+      #       echo '==== ansible installation====='
+      #       pip3 install --user ansible
+      #       # install nodejs and npm
+      #       echo '======node - npm installation'
+      #       curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
+      #       yum -y install nodejs
       - attach_workspace:
           at: ws
       - run:
@@ -275,27 +295,27 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints: ["d5:ff:ce:90:1f:ba:cd:39:8a:86:5e:77:88:ae:7f:9a"]
-
-      - run:
-          name: Install dependencies
-          command: |
-            yum install tar -y
-            yum install gzip -y
-            # installs python
-            echo '====python installation===='
-            yum install python3 -y
-            which curl || yum install curl -y
-            echo '==== ansible installation====='
-            pip3 install --user ansible
-            # install nodejs and npm
-            echo '======node - npm installation====='
-            curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
-            yum -y install nodejs
+      - installations
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       yum install tar -y
+      #       yum install gzip -y
+      #       # installs python
+      #       echo '====python installation===='
+      #       yum install python3 -y
+      #       which curl || yum install curl -y
+      #       echo '==== ansible installation====='
+      #       pip3 install --user ansible
+      #       # install nodejs and npm
+      #       echo '======node - npm installation====='
+      #       curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
+      #       yum -y install nodejs
       - attach_workspace:
           at: ws
       - run:
