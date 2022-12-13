@@ -5,8 +5,8 @@
 
 - name: "install tar"
   shell: |
-    apt-get install tar -y
-    apt-get install net-tools -y
+    sudo apt-get install tar -y
+    # apt-get install net-tools -y
 
 - name: "extract artifact"
   shell: |
