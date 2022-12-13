@@ -38,7 +38,8 @@ commands:
             # sudo apt-get install -y nodejs
             # install pm2
             sudo apt-get install -y python3-pip
-            sudo pip3 install --user ansible
+            sudo pip3 install ansible
+            export PATH=~/.local/bin:$PATH
             sudo npm install pm2 -g
                   
   revert-migrations:
@@ -255,22 +256,6 @@ jobs:
     steps:
       - checkout
       - installations
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       # install tar
-      #       yum install tar -y
-      #       yum install gzip -y
-      #       # installs python
-      #       echo '====python installation===='
-      #       yum install python3 -y
-      #       which curl || yum install curl -y
-      #       echo '==== ansible installation====='
-      #       pip3 install --user ansible
-      #       # install nodejs and npm
-      #       echo '======node - npm installation'
-      #       curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
-      #       yum -y install nodejs
       - attach_workspace:
           at: ws
       - run:
@@ -302,21 +287,6 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["d5:ff:ce:90:1f:ba:cd:39:8a:86:5e:77:88:ae:7f:9a"]
       - installations
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       yum install tar -y
-      #       yum install gzip -y
-      #       # installs python
-      #       echo '====python installation===='
-      #       yum install python3 -y
-      #       which curl || yum install curl -y
-      #       echo '==== ansible installation====='
-      #       pip3 install --user ansible
-      #       # install nodejs and npm
-      #       echo '======node - npm installation====='
-      #       curl -k --silent --location https://rpm.nodesource.com/setup_18.x | bash -
-      #       yum -y install nodejs
       - attach_workspace:
           at: ws
       - run:
