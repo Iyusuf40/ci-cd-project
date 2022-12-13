@@ -20,4 +20,12 @@
     cd backend
     npm install
     pm2 stop default
+    export TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
+    export TYPEORM_USERNAME=postgres
+    export TYPEORM_PORT=5432
+    export TYPEORM_PASSWORD=123456789
+    export TYPEORM_DATABASE=postgres
+    export TYPEORM_CONNECTION=postgres
+    export TYPEORM_MIGRATIONS_DIR=./src/migrations
+    export TYPEORM_HOST=db.cwguf8kxzpp0.us-west-2.rds.amazonaws.com
     pm2 start npm -- start
