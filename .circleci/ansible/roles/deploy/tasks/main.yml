@@ -9,6 +9,9 @@
 
 - name: "extract artifact"
   shell: |
+    mkdir -p backend
+    cp artifact.tar.gz backend
+    cd backend
     tar xvfz artifact.tar.gz
     ls
 
