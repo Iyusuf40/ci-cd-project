@@ -337,7 +337,6 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      # Checkout code from git
       - install-aws-cli
       - run:
           name: Install dependencies
