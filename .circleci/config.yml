@@ -428,7 +428,7 @@ jobs:
                 echo "=== nothing to clean ==="
               else
                 echo "=== cleanup starting ==="
-                echo $OldWorkflowID
+                echo "this is the old id: $OldWorkflowID"
                 aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
                 aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"  
