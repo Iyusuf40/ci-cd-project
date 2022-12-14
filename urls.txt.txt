@@ -1,0 +1,2 @@
+URL01 = https://github.com/Iyusuf40/ci-cd-project
+URL02 = http://udapeople-8a5c947.s3-website-us-west-2.amazonaws.com
