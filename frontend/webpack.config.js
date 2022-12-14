@@ -4,8 +4,8 @@ const Dotenv = require('dotenv-webpack');
 require('dotenv').config();
 
 // variables
-var isProduction =
-  process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
+var isProduction = false
+  // process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
 var sourcePath = path.join(__dirname, './src');
 var outPath = path.join(__dirname, './dist');
 
