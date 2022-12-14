@@ -6,19 +6,19 @@
 - name: "install tar"
   shell: |
     sudo apt-get install tar -y
-    # apt-get install net-tools -y
+    sudo apt-get install net-tools -y
 
 - name: "extract artifact"
   shell: |
-    mkdir -p backend
-    cp artifact.tar.gz backend
-    cd backend
+    # mkdir -p backend
+    # cp artifact.tar.gz backend
+    # cd backend
     tar xvfz artifact.tar.gz
     ls
 
 - name: "start app"
   shell: |
-    cd backend
+    # cd backend
     npm install
     pm2 stop default
     export TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
