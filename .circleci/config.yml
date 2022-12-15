@@ -266,7 +266,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:16.13
     steps:
       - checkout
       - installations
@@ -295,7 +295,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:16.13
     steps:
       - checkout
       - add_ssh_keys:
@@ -386,6 +386,7 @@ jobs:
       - run:
           name: Update cloudfront distribution
           command: |
+            aws cloudformation delete-stack --stack-name InitialStack
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --stack-name InitialStack \

@@ -14,7 +14,7 @@
     sudo apt install python3 -y
     sudo apt-get install curl -y
     # install nodejs and npm
-    curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && \
       sudo apt-get install -y nodejs
     # install pm2
     sudo npm install pm2 -g
