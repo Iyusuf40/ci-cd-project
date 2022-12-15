@@ -386,7 +386,8 @@ jobs:
       - run:
           name: Update cloudfront distribution
           command: |
-            aws cloudformation delete-stack --stack-name InitialStack
+            # aws cloudformation delete-stack --stack-name InitialStack
+            # sleep 20
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --stack-name InitialStack \
